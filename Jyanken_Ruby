@@ -1,0 +1,85 @@
+def read_choice(min, max, message)
+    while true
+        puts message
+        input = gets.to_i
+        if input >= min && input <= max
+            return input
+        else
+            puts "#{min}~#{max}の数字を入力してください"
+        end
+    end
+end
+
+def hand_name(n)
+    case n 
+    when 0 then "グー"
+    when 1 then "チョキ"
+    when 2 then "パー"
+    end
+end
+
+def dir_name(n)
+    case n 
+    when 0 then "上"
+    when 1 then "右"
+    when 2 then "下"
+    when 3 then "左"
+    end
+end
+
+def janken_result(me, enemy)
+    if me == enemy
+        "draw"
+    elsif(me == 0 && enemy == 1)||(me == 1 && enemy == 2)|| (me == 2 && enemy == 0)
+        "win"
+    else
+        "lose"
+    end
+end
+
+puts "じゃんけん → あっち向いてホイ"
+
+while true
+    me = read_choice(0, 2, "じゃんけん 0:グー 1:チョキ 2:パー を選んでください")
+    enemy = rand(0..2)
+
+    puts "自分: #{hand_name(me)}"
+    puts "相手: #{hand_name(enemy)}"
+
+    result = janken_result(me, enemy)
+
+    if result == "draw"
+        puts "あいこです。 もう一度じゃんけん。"
+        next
+    elsif result =="win"
+        puts "じゃんけん勝ち。あっち向いてホイ（自分が指）"
+        finger = read_choice(0, 3, "指の方向 0:上 1:右 2:下 3:左 を選んでください")
+        face = rand(0..3)
+
+        puts "自分: #{dir_name(finger)}"
+        puts "相手: #{dir_name(face)}"
+
+        if finger == face
+            puts "一致。自分の勝ちです。"
+            break
+        else
+            puts "不一致。じゃんけんからやり直し。"
+            next
+        end
+    else
+        puts "じゃんけん負け。あっち向いてホイ（相手が指）"
+        finger = rand(0..3)
+        face =read_choice(0,3,"顔の方向 0:上 1:右 2:下 3:左を選んでください")
+
+        puts "相手の指: #{dir_name(finger)}"
+        puts "自分の顔: #{dir_name(face)}"
+
+        if  finger == face
+            puts "一致。相手の勝ちです。"
+            break
+        else
+            puts "不一致。じゃんけんからやり直し。"
+            next
+        end
+    end
+end
